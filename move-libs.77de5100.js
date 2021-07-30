@@ -84828,7 +84828,7 @@ var be = {
 };
 exports.movenet = Me;
 exports.calculators = be;
-},{"@mediapipe/pose":"node_modules/@mediapipe/pose/pose.js","@tensorflow/tfjs-converter":"node_modules/@tensorflow/tfjs-converter/dist/index.js","@tensorflow/tfjs-core":"node_modules/@tensorflow/tfjs-core/dist/index.js"}],"message.ts":[function(require,module,exports) {
+},{"@mediapipe/pose":"node_modules/@mediapipe/pose/pose.js","@tensorflow/tfjs-converter":"node_modules/@tensorflow/tfjs-converter/dist/index.js","@tensorflow/tfjs-core":"node_modules/@tensorflow/tfjs-core/dist/index.js"}],"test.ts":[function(require,module,exports) {
 "use strict";
 
 var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
@@ -85017,7 +85017,7 @@ var poseDetection = __importStar(require("@tensorflow-models/pose-detection"));
 
 function testCanvas(video, canvas) {
   return __awaiter(this, void 0, void 0, function () {
-    function draw() {
+    function drawFrame() {
       var _this = this;
 
       requestAnimationFrame(function () {
@@ -85045,10 +85045,12 @@ function testCanvas(video, canvas) {
                 head = getHeadPosition(points);
                 hand = points.right_wrist;
 
-                if (head.score > 0.5 && hand.score > 0.5) {//
+                if (head.score > 0.5 && hand.score > 0.5) {
+                  ctx.fillStyle = poseMatches(head, hand, prevHand) ? 'lightgreen' : 'red';
+                  prevHand = hand;
+                } else {
+                  ctx.fillStyle = 'yellow';
                 }
-
-                ctx.fillStyle = poseMatches(head, hand, prevHand) ? 'lightgreen' : 'red';
 
                 for (_i = 0, _a = pose.keypoints; _i < _a.length; _i++) {
                   point = _a[_i];
@@ -85056,8 +85058,7 @@ function testCanvas(video, canvas) {
                   ctx.fillText(point.name + " " + point.score.toFixed(1), point.x + 4, point.y + 4);
                 }
 
-                prevHand = hand;
-                draw();
+                drawFrame();
                 return [2
                 /*return*/
                 ];
@@ -85077,7 +85078,6 @@ function testCanvas(video, canvas) {
 
         case 1:
           detector = _a.sent();
-          console.log(detector);
           imageSize = {
             height: video.videoHeight,
             width: video.videoWidth
@@ -85085,10 +85085,11 @@ function testCanvas(video, canvas) {
           canvas.width = imageSize.width;
           canvas.height = imageSize.height;
           ctx = canvas.getContext('2d');
+          ctx.fillStyle = 'red';
           ctx.font = '12px serif';
           prevHand = undefined;
           tracked = ['nose', 'left_eye', 'right_eye', 'right_wrist'];
-          draw();
+          drawFrame();
           return [2
           /*return*/
           ];
@@ -85126,8 +85127,8 @@ function poseMatches(head, hand, prevHand) {
     return false;
   }
 
-  if (prevHand && prevHand.y < hand.y) {
-    // console.log('head moving up', prevHand, hand);
+  if (prevHand && prevHand.y < hand.y && hand.y - prevHand.y > 5) {
+    // console.log('hand moving up', prevHand, hand);
     return false;
   }
 
@@ -85285,7 +85286,7 @@ Object.defineProperty(exports, "__esModule", {
 
 require("@tensorflow/tfjs-backend-webgl");
 
-var message_1 = require("./message");
+var test_1 = require("./test");
 
 run();
 
@@ -85314,7 +85315,7 @@ function run() {
             video.onloadeddata = function () {
               return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                  message_1.testCanvas(video, canvas);
+                  test_1.testCanvas(video, canvas);
                   return [2
                   /*return*/
                   ];
@@ -85344,7 +85345,7 @@ function getMedia() {
     });
   });
 }
-},{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","./message":"message.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@tensorflow/tfjs-backend-webgl":"node_modules/@tensorflow/tfjs-backend-webgl/dist/index.js","./test":"test.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -85372,7 +85373,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60038" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62053" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
