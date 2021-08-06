@@ -1,0 +1,28 @@
+{
+  "name": "test-pose-detection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html --public-url ./",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mediapipe/pose": "^0.4.1627343400",
+    "@tensorflow-models/pose-detection": "0.0.4",
+    "@tensorflow/tfjs-backend-webgl": "^3.8.0",
+    "@tensorflow/tfjs-converter": "^3.8.0",
+    "@tensorflow/tfjs-core": "^3.8.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "parcel-bundler": "^1.12.5",
+    "typescript": "^4.3.5"
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
+}
